@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import base64
 from collections import Counter, defaultdict
 from html import escape
+from pathlib import Path
 from typing import Any
 
 from src.utils.schemas import DDRReport
@@ -16,7 +18,7 @@ def generate_html_report(
     findings: list[dict[str, Any]],
     images: list[dict[str, Any]],
 ) -> str:
-    image_map = {image["image_id"]: image["path"] for image in images}
+    image_map = {image["image_id"]: _embed_image(image["path"]) for image in images}
     sections_html = [
         _render_section(report.property_issue_summary),
         _render_findings_dashboard(report.area_wise_observations, findings, image_map),
@@ -449,10 +451,18 @@ def _render_finding_card(finding: dict[str, Any], image_map: dict[str, str]) -> 
     )
     image_tags = []
     for image_id in finding.get("images", [])[:4]:
+        if not _is_client_view_image(image_id):
+            continue
         image_path = image_map.get(image_id)
         if not image_path:
             continue
         image_tags.append(f"<img src='{escape(image_path)}' alt='{escape(image_id)}'>")
+    if not image_tags and any(
+        image_id.startswith("INSPECTION-PAGE-") for image_id in finding.get("images", [])
+    ):
+        notes_html += (
+            "<div class='evidence'>No usable inspection photograph was embedded in the provided PDF for this finding.</div>"
+        )  # Client-view fix: hide rendered inspection page snapshots when the PDF only exposes placeholder page assets, and explain the missing photo instead of showing a misleading full-page image.
     images_html = (
         f"<div class='image-grid'>{''.join(image_tags)}</div>" if image_tags else ""
     )
@@ -585,3 +595,24 @@ def _source_tokens(finding: dict[str, Any]) -> list[str]:
         }
     )
     return tokens or ["inspection"]
+
+
+def _is_client_view_image(image_id: str) -> bool:
+    if image_id.startswith("INSPECTION-PAGE-"):
+        return False
+    return True
+
+
+def _embed_image(path: str) -> str:
+    image_path = Path(path)
+    if not image_path.exists():
+        return path
+    suffix = image_path.suffix.lower()
+    mime_type = {
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".webp": "image/webp",
+    }.get(suffix, "application/octet-stream")
+    encoded = base64.b64encode(image_path.read_bytes()).decode("ascii")
+    return f"data:{mime_type};base64,{encoded}"  # Portability fix: embed local report images directly into the HTML so browsers do not depend on fragile filesystem paths.
