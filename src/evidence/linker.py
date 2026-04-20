@@ -53,14 +53,18 @@ def _resolve_finding_images(
         if start_page is not None:
             return [
                 image["image_id"]
-                for image in image_index.get(("thermal", int(start_page)), [])
+                for image in _prioritize_visual_images(
+                    image_index.get(("thermal", int(start_page)), [])
+                )
             ]
 
     images = []
     for source_ref in finding.get("source_refs", []):
         images.extend(
             image["image_id"]
-            for image in image_index.get((source_ref["doc_type"], source_ref["page"]), [])
+            for image in _prioritize_visual_images(
+                image_index.get((source_ref["doc_type"], source_ref["page"]), [])
+            )
         )
     return sorted(set(images))
 
@@ -78,7 +82,7 @@ def _allocate_inspection_images(
             grouped[finding["source_refs"][0]["page"]].append(finding)
 
     for page_number, page_findings in grouped.items():
-        page_images = image_index.get(("inspection", page_number), [])
+        page_images = _prioritize_visual_images(image_index.get(("inspection", page_number), []))
         if not page_images:
             continue
 
@@ -91,6 +95,13 @@ def _allocate_inspection_images(
             allocations[finding["finding_id"]] = image_ids
 
     return allocations
+
+
+def _prioritize_visual_images(page_images: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    photo_images = [image for image in page_images if "-IMG-" in image.get("image_id", "")]
+    if photo_images:
+        return photo_images  # Report fix: prefer extracted photo thumbnails over rendered full-page snapshots so findings display the actual site evidence first.
+    return page_images
 
 
 def _derive_page_weights(page_text: str, page_findings: list[dict[str, Any]]) -> list[int]:
