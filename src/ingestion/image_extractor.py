@@ -70,8 +70,7 @@ def extract_images(
             and source_path is not None
             and page_index not in rendered_pages
             and (
-                (page_images and not extracted_page_images)
-                or bool(deferred_small_assets)
+                not page_images and not extracted_page_images
             )
         )
         if needs_render_fallback:
@@ -86,11 +85,12 @@ def extract_images(
                 rendered_pages.add(page_index)
                 continue
 
-        if doc_type == "inspection" and not extracted_page_images and deferred_small_assets:
+        if doc_type == "inspection" and deferred_small_assets:
             for image_index, (pil_image, extension, filename) in enumerate(deferred_small_assets, start=1):
                 image_id = f"{doc_type.upper()}-IMG-P{page_index:02d}-{image_index:02d}"
                 image_path = doc_output / filename
-                pil_image.save(image_path)
+                upscaled = _upscale_thumbnail(pil_image)
+                upscaled.save(image_path)
                 images.append(
                     ExtractedImage(
                         image_id=image_id,
@@ -99,7 +99,7 @@ def extract_images(
                         path=str(image_path),
                         caption=filename,
                     )
-                )  # Proper-fix fallback: when no PDF renderer is available, the extractor still preserves embedded images instead of leaving the inspection page blank.
+                )  # Visual fix: inspection pages now prefer upscaled photo thumbnails over full-page snapshots, so the report shows the actual image evidence instead of the entire PDF page.
 
     return images
 
@@ -193,3 +193,13 @@ def _render_with_pdf2image(source_path: str, page_index: int) -> Image.Image | N
         return pages[0].convert("RGB")
     except Exception:
         return None
+
+
+def _upscale_thumbnail(image: Image.Image, target_long_side: int = 220) -> Image.Image:
+    width, height = image.size
+    long_side = max(width, height)
+    if long_side <= 0:
+        return image
+    scale = max(target_long_side / long_side, 1.0)
+    new_size = (max(int(width * scale), 1), max(int(height * scale), 1))
+    return image.resize(new_size, Image.Resampling.LANCZOS).convert("RGB")  # Extraction fix: enlarge tiny embedded inspection photos before saving so the client report shows usable image evidence without needing a full-page fallback.
