@@ -31,22 +31,23 @@ STOPWORDS = {
     "with",
 }
 AREA_TERMS = (
-    "master bedroom bathroom",
-    "common bathroom",
-    "external wall",
-    "parking area",
-    "master bedroom",
-    "common bedroom",
-    "staircase",
-    "balcony",
-    "terrace",
-    "passage",
-    "bathroom",
-    "bedroom",
-    "kitchen",
-    "parking",
-    "ceiling",
-    "hall",
+    ("master bedroom bathroom", "Master Bedroom Bathroom"),
+    ("mb bathroom", "Master Bedroom Bathroom"),
+    ("common bathroom", "Common Bathroom"),
+    ("external wall", "External Wall"),
+    ("parking area", "Parking Area"),
+    ("master bedroom", "Master Bedroom"),
+    ("common bedroom", "Bedroom"),
+    ("staircase", "Staircase"),
+    ("balcony", "Balcony"),
+    ("terrace", "Terrace"),
+    ("passage", "Passage"),
+    ("bathroom", "Bathroom"),
+    ("bedroom", "Bedroom"),
+    ("kitchen", "Kitchen"),
+    ("parking", "Parking Area"),
+    ("ceiling", "Ceiling Area"),
+    ("hall", "Hall"),
 )
 
 
@@ -178,10 +179,10 @@ def _unique_by_key(items: list[dict[str, Any]], key) -> list[dict[str, Any]]:
 def _merge_area(observation: str, sequential_index: int) -> str:
     lowered = observation.lower()
     matches = []
-    for term in AREA_TERMS:
+    for term, canonical in AREA_TERMS:
         position = lowered.find(term)
         if position >= 0:
-            matches.append((position, term.title()))
+            matches.append((position, canonical))
     if matches:
         return sorted(matches, key=lambda item: item[0])[0][1]
     return f"Unspecified_{sequential_index}"
