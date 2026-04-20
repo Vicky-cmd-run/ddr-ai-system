@@ -1,0 +1,11 @@
+Review merged findings and detect:
+- conflicts between inspection and thermal evidence
+- ambiguity caused by weak or indirect linkage
+- unsupported claims that should not be stated strongly
+- missing information that should be shown as "Not Available"
+
+Rules:
+- Do not create a conflict unless the supplied evidence actually disagrees or introduces meaningful ambiguity.
+- If there is no conflict, return an empty list.
+- If evidence is incomplete, prefer a missing-information flag over a fabricated conclusion.
+- Keep every statement concise and grounded.

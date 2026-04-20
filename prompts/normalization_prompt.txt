@@ -1,0 +1,9 @@
+Normalize inspection and thermal findings into a canonical schema.
+
+Rules:
+- Do not invent facts not present in the source finding.
+- Preserve the meaning of the original observation.
+- Use client-friendly area labels where possible.
+- If the area cannot be inferred, return "Not Available".
+- Normalize synonymous terms such as dampness, seepage, leakage, moisture ingress, paint damage, tile hollowness, and thermal anomaly.
+- Keep normalized observations short, clear, and usable across similar inspection reports.

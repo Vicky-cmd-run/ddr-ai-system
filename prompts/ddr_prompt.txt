@@ -1,0 +1,15 @@
+Compose a final DDR with these sections:
+1. Property Issue Summary
+2. Area-wise Observations
+3. Probable Root Cause
+4. Severity Assessment
+5. Recommended Actions
+6. Additional Notes
+7. Missing or Unclear Information
+
+Rules:
+- Use simple, client-friendly language.
+- Do not mention confidence scores, validation status, prompt logic, or system internals.
+- Do not add any new reasoning beyond the validated payload.
+- If details are missing or uncertain, explicitly say "Not Available".
+- Keep the report professional and readable for a client, not for an engineer.

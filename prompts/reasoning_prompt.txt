@@ -1,0 +1,13 @@
+Given validated evidence, provide:
+- probable root cause
+- severity level
+- severity reasoning
+- recommended next action
+- brief additional notes when uncertainty matters
+
+Rules:
+- Do not invent facts.
+- If the root cause cannot be responsibly inferred, return "Not Available".
+- Use simple, client-friendly language.
+- Avoid unnecessary technical jargon.
+- If conflict or missing evidence reduces certainty, reflect that in the reasoning.
