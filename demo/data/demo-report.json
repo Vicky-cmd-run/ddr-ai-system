@@ -1,0 +1,413 @@
+{
+  "project": {
+    "name": "DDR AI System",
+    "tagline": "Evidence-first diagnostic reporting for inspection and thermal reports.",
+    "deployment": "Static Vercel demo for the pipeline architecture and sample outputs."
+  },
+  "stats": {
+    "documents": 2,
+    "pages": 56,
+    "inspectionPages": 17,
+    "thermalPages": 39,
+    "rawFindings": 55,
+    "mergedFindings": 55,
+    "conflicts": 21,
+    "groundedRootCauses": 34,
+    "missingLocations": 36
+  },
+  "distribution": {
+    "severity": {
+      "Medium": 11,
+      "Low": 38,
+      "High": 6
+    },
+    "confidence": {
+      "Red": 21,
+      "Green": 14,
+      "Amber": 20
+    },
+    "topAreas": [
+      [
+        "Location not recorded",
+        36
+      ],
+      [
+        "Master Bedroom",
+        4
+      ],
+      [
+        "Common Bathroom",
+        3
+      ],
+      [
+        "Hall",
+        2
+      ],
+      [
+        "Bedroom",
+        2
+      ],
+      [
+        "Kitchen",
+        2
+      ]
+    ]
+  },
+  "stages": [
+    {
+      "step": "01",
+      "title": "PDF ingestion + extraction",
+      "detail": "Layout-aware text and image pull from inspection and thermal reports."
+    },
+    {
+      "step": "02",
+      "title": "Evidence builder",
+      "detail": "Every finding is stored with document, page, and image references."
+    },
+    {
+      "step": "03",
+      "title": "Image placement tagging",
+      "detail": "Inspection photos are linked to locations and findings when usable."
+    },
+    {
+      "step": "04",
+      "title": "Evidence linking",
+      "detail": "Claims stay grounded in page-level source references."
+    },
+    {
+      "step": "05",
+      "title": "Semantic normalization",
+      "detail": "Terminology is unified across inspection and thermal language."
+    },
+    {
+      "step": "06",
+      "title": "Merge + dedup",
+      "detail": "Only findings with matching area and content fingerprints are merged."
+    },
+    {
+      "step": "07",
+      "title": "Conflict + missing detection",
+      "detail": "Cross-document mismatches and gaps are surfaced, not hidden."
+    },
+    {
+      "step": "08",
+      "title": "Confidence scoring",
+      "detail": "Each finding is marked Green, Amber, or Red with a reason."
+    },
+    {
+      "step": "09",
+      "title": "Structured reasoning",
+      "detail": "Severity and probable cause stay rule-based and evidence aware."
+    },
+    {
+      "step": "10",
+      "title": "Validation layer",
+      "detail": "Ungrounded root causes are stripped before client composition."
+    },
+    {
+      "step": "11",
+      "title": "DDR composer",
+      "detail": "Final formatting produces the client-ready DDR plus explainability outputs."
+    }
+  ],
+  "artifacts": [
+    {
+      "title": "Client DDR",
+      "format": "HTML + PDF",
+      "description": "Readable, client-facing report with grouped findings and recommendations."
+    },
+    {
+      "title": "Explainability JSON",
+      "format": "JSON",
+      "description": "Machine-readable finding evidence, confidence, conflicts, and cause status."
+    },
+    {
+      "title": "Trace View",
+      "format": "JSON",
+      "description": "Per-finding source mapping back to document pages and image references."
+    }
+  ],
+  "featuredFindings": [
+    {
+      "id": "INS-001",
+      "location": "Hall",
+      "observation": "Hall Skirting level Dampness",
+      "normalizedObservation": "Moisture intrusion observed in Hall.",
+      "severity": "Medium",
+      "confidence": "Red",
+      "rootCause": "Root cause could not be determined from the available inspection data.",
+      "rootCauseStatus": "NOT_IDENTIFIED",
+      "actions": [
+        "Identify the moisture entry path before finishing repairs.",
+        "Repair the source area and then restore damaged plaster or paint."
+      ],
+      "reasoning": "Hall should be repaired, but the documents do not suggest an immediate structural risk.",
+      "conflicts": [
+        "Inspection report classifies this area as low severity; thermal data indicates high. Both readings are included. Manual review recommended."
+      ],
+      "evidenceText": "Hall Skirting level Dampness",
+      "supportingReference": [
+        {
+          "docType": "inspection",
+          "page": 2,
+          "snippet": "Hall Skirting level Dampness"
+        }
+      ],
+      "images": [
+        "assets/images/inspection-hall-1.png",
+        "assets/images/inspection-hall-2.png"
+      ],
+      "sourceTypes": [
+        "inspection_negative"
+      ],
+      "trace": [
+        {
+          "doc_type": "inspection",
+          "page": 2,
+          "snippet": "Hall Skirting level Dampness",
+          "image_refs": [
+            "INSPECTION-IMG-P02-01",
+            "INSPECTION-IMG-P02-02",
+            "INSPECTION-IMG-P02-03",
+            "INSPECTION-IMG-P02-04",
+            "INSPECTION-IMG-P02-05",
+            "INSPECTION-IMG-P02-06",
+            "INSPECTION-IMG-P02-07",
+            "INSPECTION-IMG-P02-08",
+            "INSPECTION-IMG-P02-09",
+            "INSPECTION-IMG-P02-10",
+            "INSPECTION-IMG-P02-11",
+            "INSPECTION-IMG-P02-12"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "INS-002",
+      "location": "Bedroom",
+      "observation": "Bedroom Skirting level Dampness",
+      "normalizedObservation": "Moisture intrusion observed in Bedroom.",
+      "severity": "Medium",
+      "confidence": "Red",
+      "rootCause": "Root cause could not be determined from the available inspection data.",
+      "rootCauseStatus": "NOT_IDENTIFIED",
+      "actions": [
+        "Identify the moisture entry path before finishing repairs.",
+        "Repair the source area and then restore damaged plaster or paint."
+      ],
+      "reasoning": "Bedroom should be repaired, but the documents do not suggest an immediate structural risk.",
+      "conflicts": [
+        "Inspection report classifies this area as low severity; thermal data indicates high. Both readings are included. Manual review recommended.",
+        "Inspection report refers to this location as 'Bedroom'; thermal report refers to it as 'Common Bedroom'. Treated as the same area for this report."
+      ],
+      "evidenceText": "Bedroom Skirting level Dampness",
+      "supportingReference": [
+        {
+          "docType": "inspection",
+          "page": 2,
+          "snippet": "Bedroom Skirting level Dampness"
+        }
+      ],
+      "images": [
+        "assets/images/inspection-bedroom-1.png"
+      ],
+      "sourceTypes": [
+        "inspection_negative"
+      ],
+      "trace": [
+        {
+          "doc_type": "inspection",
+          "page": 2,
+          "snippet": "Bedroom Skirting level Dampness",
+          "image_refs": [
+            "INSPECTION-IMG-P02-01",
+            "INSPECTION-IMG-P02-02",
+            "INSPECTION-IMG-P02-03",
+            "INSPECTION-IMG-P02-04",
+            "INSPECTION-IMG-P02-05",
+            "INSPECTION-IMG-P02-06",
+            "INSPECTION-IMG-P02-07",
+            "INSPECTION-IMG-P02-08",
+            "INSPECTION-IMG-P02-09",
+            "INSPECTION-IMG-P02-10",
+            "INSPECTION-IMG-P02-11",
+            "INSPECTION-IMG-P02-12"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "INS-003",
+      "location": "Common Bathroom",
+      "observation": "Common Bathroom tile hollowness",
+      "normalizedObservation": "Tile hollowness or joint-related issue observed in Common Bathroom.",
+      "severity": "Medium",
+      "confidence": "Green",
+      "rootCause": "loose tile joints",
+      "rootCauseStatus": "IDENTIFIED",
+      "actions": [
+        "Inspect tile joints and hollow areas in Common Bathroom.",
+        "Repair damaged joints and reseal the affected surface."
+      ],
+      "reasoning": "Common Bathroom should be repaired, but the documents do not suggest an immediate structural risk.",
+      "conflicts": [],
+      "evidenceText": "Common Bathroom tile hollowness",
+      "supportingReference": [
+        {
+          "docType": "inspection",
+          "page": 2,
+          "snippet": "Common Bathroom tile hollowness"
+        }
+      ],
+      "images": [
+        "assets/images/inspection-bathroom-1.png",
+        "assets/images/inspection-bathroom-2.png"
+      ],
+      "sourceTypes": [
+        "inspection_positive"
+      ],
+      "trace": [
+        {
+          "doc_type": "inspection",
+          "page": 2,
+          "snippet": "Common Bathroom tile hollowness",
+          "image_refs": [
+            "INSPECTION-IMG-P02-01",
+            "INSPECTION-IMG-P02-02",
+            "INSPECTION-IMG-P02-03",
+            "INSPECTION-IMG-P02-04",
+            "INSPECTION-IMG-P02-05",
+            "INSPECTION-IMG-P02-06",
+            "INSPECTION-IMG-P02-07",
+            "INSPECTION-IMG-P02-08",
+            "INSPECTION-IMG-P02-09",
+            "INSPECTION-IMG-P02-10",
+            "INSPECTION-IMG-P02-11",
+            "INSPECTION-IMG-P02-12"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "INS-004",
+      "location": "Master Bedroom",
+      "observation": "Master bedroom Skirting level Dampness",
+      "normalizedObservation": "Moisture intrusion observed in Master Bedroom.",
+      "severity": "Medium",
+      "confidence": "Green",
+      "rootCause": "Root cause could not be determined from the available inspection data.",
+      "rootCauseStatus": "NOT_IDENTIFIED",
+      "actions": [
+        "Identify the moisture entry path before finishing repairs.",
+        "Repair the source area and then restore damaged plaster or paint."
+      ],
+      "reasoning": "Master Bedroom should be repaired, but the documents do not suggest an immediate structural risk.",
+      "conflicts": [],
+      "evidenceText": "Master bedroom Skirting level Dampness",
+      "supportingReference": [
+        {
+          "docType": "inspection",
+          "page": 3,
+          "snippet": "Master bedroom Skirting level Dampness"
+        }
+      ],
+      "images": [],
+      "sourceTypes": [
+        "inspection_negative"
+      ],
+      "trace": [
+        {
+          "doc_type": "inspection",
+          "page": 3,
+          "snippet": "Master bedroom Skirting level Dampness",
+          "image_refs": [
+            "INSPECTION-PAGE-P03"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "INS-005",
+      "location": "Kitchen",
+      "observation": "Kitchen Skirting level Dampness",
+      "normalizedObservation": "Moisture intrusion observed in Kitchen.",
+      "severity": "Medium",
+      "confidence": "Red",
+      "rootCause": "Root cause could not be determined from the available inspection data.",
+      "rootCauseStatus": "NOT_IDENTIFIED",
+      "actions": [
+        "Identify the moisture entry path before finishing repairs.",
+        "Repair the source area and then restore damaged plaster or paint."
+      ],
+      "reasoning": "Kitchen should be repaired, but the documents do not suggest an immediate structural risk.",
+      "conflicts": [
+        "Inspection report classifies this area as low severity; thermal data indicates high. Both readings are included. Manual review recommended."
+      ],
+      "evidenceText": "Kitchen Skirting level Dampness",
+      "supportingReference": [
+        {
+          "docType": "inspection",
+          "page": 3,
+          "snippet": "Kitchen Skirting level Dampness"
+        }
+      ],
+      "images": [],
+      "sourceTypes": [
+        "inspection_negative"
+      ],
+      "trace": [
+        {
+          "doc_type": "inspection",
+          "page": 3,
+          "snippet": "Kitchen Skirting level Dampness",
+          "image_refs": [
+            "INSPECTION-PAGE-P03"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "THM-001",
+      "location": "Location not recorded",
+      "observation": "Thermal scan RB02380X.JPG recorded hotspot 28.8\u00b0C, coldspot 23.4\u00b0C, delta 5.4\u00b0C.",
+      "normalizedObservation": "Thermal anomaly recorded for Hall.",
+      "severity": "Low",
+      "confidence": "Red",
+      "rootCause": "thermal anomaly",
+      "rootCauseStatus": "IDENTIFIED",
+      "actions": [
+        "Use the thermal anomaly as supporting evidence during physical verification."
+      ],
+      "reasoning": "Unspecified_26 has a visible issue, but the current documents suggest limited immediate impact.",
+      "conflicts": [
+        "Inspection report classifies this area as low severity; thermal data indicates high. Both readings are included. Manual review recommended."
+      ],
+      "evidenceText": "Thermal scan RB02380X.JPG recorded hotspot 28.8\u00b0C, coldspot 23.4\u00b0C, delta 5.4\u00b0C.",
+      "supportingReference": [
+        {
+          "docType": "thermal",
+          "page": 1,
+          "snippet": "Thermal scan RB02380X.JPG recorded hotspot 28.8\u00b0C, coldspot 23.4\u00b0C, delta 5.4\u00b0C."
+        }
+      ],
+      "images": [
+        "assets/images/thermal-1.png",
+        "assets/images/thermal-2.png"
+      ],
+      "sourceTypes": [
+        "thermal_scan"
+      ],
+      "trace": [
+        {
+          "doc_type": "thermal",
+          "page": 1,
+          "snippet": "Thermal scan RB02380X.JPG recorded hotspot 28.8\u00b0C, coldspot 23.4\u00b0C, delta 5.4\u00b0C.",
+          "image_refs": [
+            "THERMAL-IMG-P01-01",
+            "THERMAL-IMG-P01-06"
+          ]
+        }
+      ]
+    }
+  ]
+}
