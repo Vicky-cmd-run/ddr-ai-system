@@ -16,6 +16,19 @@ const runDemoButton = document.querySelector("#run-demo");
 const demoStatus = document.querySelector("#demo-status");
 const demoStatusCopy = document.querySelector("#demo-status-copy");
 const artifactsGrid = document.querySelector("#artifacts-grid");
+const uploadTriggers = document.querySelectorAll("[data-upload-trigger]");
+const uploadStatuses = {
+  inspection: document.querySelector('[data-upload-status="inspection"]'),
+  thermal: document.querySelector('[data-upload-status="thermal"]'),
+};
+const uploadCards = {
+  inspection: document.querySelector('[data-upload-card="inspection"]'),
+  thermal: document.querySelector('[data-upload-card="thermal"]'),
+};
+const transformCards = document.querySelector("#transform-cards");
+const previewFindingsCount = document.querySelector("#preview-findings-count");
+const previewRootCauseCount = document.querySelector("#preview-root-cause-count");
+const previewConflictCount = document.querySelector("#preview-conflict-count");
 const findingList = document.querySelector("#finding-list");
 const detailCard = document.querySelector("#detail-card");
 const locationFilter = document.querySelector("#location-filter");
@@ -46,6 +59,7 @@ renderStages();
 renderArtifacts();
 renderFilterOptions();
 renderDistributions();
+renderPreviewStats();
 applyFilters();
 bindEvents();
 
@@ -158,10 +172,45 @@ function renderBarGroup(target, entries, total) {
 
 function bindEvents() {
   runDemoButton.addEventListener("click", runReplay);
+  uploadTriggers.forEach((button) => {
+    button.addEventListener("click", () => simulateUpload(button.dataset.uploadTrigger));
+  });
   [locationFilter, severityFilter, conflictFilter, searchInput].forEach((element) => {
     element.addEventListener("input", applyFilters);
     element.addEventListener("change", applyFilters);
   });
+}
+
+function renderPreviewStats() {
+  previewFindingsCount.textContent = String(data.stats.mergedFindings);
+  previewRootCauseCount.textContent = String(data.stats.groundedRootCauses);
+  previewConflictCount.textContent = String(data.stats.conflicts);
+}
+
+async function simulateUpload(kind) {
+  const labelMap = {
+    inspection: "inspection.pdf",
+    thermal: "thermal.pdf",
+  };
+  const card = uploadCards[kind];
+  const status = uploadStatuses[kind];
+  if (!card || !status) {
+    return;
+  }
+  card.classList.add("is-processing");
+  status.textContent = `Uploading ${labelMap[kind]}...`;
+  await sleep(500);
+  status.textContent = `${labelMap[kind]} loaded`;
+  card.classList.remove("is-processing");
+  card.classList.add("is-complete");
+
+  if (
+    uploadCards.inspection?.classList.contains("is-complete") &&
+    uploadCards.thermal?.classList.contains("is-complete")
+  ) {
+    demoStatus.textContent = "Inputs staged";
+    demoStatusCopy.textContent = "Both source reports are ready. Run the sample to replay the pipeline.";
+  }
 }
 
 function applyFilters() {
@@ -309,6 +358,7 @@ async function runReplay() {
   progressFill.style.width = "0%";
   progressLabel.textContent = `0 / ${data.stages.length} stages`;
   resetStageCards();
+  transformCards?.classList.add("is-running");
 
   for (const [index, stage] of data.stages.entries()) {
     const stageNode = document.querySelector(`.stage-card[data-step="${stage.step}"]`);
@@ -332,6 +382,8 @@ async function runReplay() {
   appendConsoleLine(`<span>DONE</span> Sample DDR ready with ${data.stats.mergedFindings} merged findings and ${data.stats.conflicts} conflict flags.`);
   demoStatus.textContent = "Complete";
   demoStatusCopy.textContent = "Replay finished. Use the findings explorer to inspect the grounded sample output.";
+  transformCards?.classList.remove("is-running");
+  transformCards?.classList.add("is-complete");
   state.replayRunning = false;
   runDemoButton.disabled = false;
 }

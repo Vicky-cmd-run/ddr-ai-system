@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sample DDR Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./sample-report.css">
+</head>
+<body>
+  <main class="report-shell">
+    <header class="report-hero">
+      <div>
+        <div class="eyebrow">Sample DDR output</div>
+        <h1>Detailed Diagnostic Report</h1>
+        <p>
+          Client-ready static preview generated from the demo dataset. This page focuses on clear findings,
+          grounded references, and readable recommendations.
+        </p>
+      </div>
+      <a class="back-link" href="./index.html">Back to live demo</a>
+    </header>
+
+    <section class="report-section report-summary">
+      <div>
+        <h2>Property Issue Summary</h2>
+        <p id="summary-copy"></p>
+      </div>
+      <div class="summary-stats" id="summary-stats"></div>
+    </section>
+
+    <section class="report-section">
+      <h2>Area-wise Findings</h2>
+      <div class="area-groups" id="area-groups"></div>
+    </section>
+
+    <section class="report-grid">
+      <section class="report-section">
+        <h2>Missing or Unclear Information</h2>
+        <div id="missing-list" class="stack-list"></div>
+      </section>
+      <section class="report-section">
+        <h2>Traceability Snapshot</h2>
+        <div id="trace-list" class="stack-list"></div>
+      </section>
+    </section>
+
+    <footer class="report-footer">
+      <span>Crafted by VIGNESH G A with ❤️</span>
+      <span>Static DDR preview for Vercel deployment</span>
+    </footer>
+  </main>
+
+  <script src="./sample-report.js" type="module"></script>
+</body>
+</html>

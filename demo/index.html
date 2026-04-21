@@ -22,6 +22,7 @@
         </p>
         <div class="hero-actions">
           <button id="run-demo" class="primary-button" type="button">Run live sample</button>
+          <a class="ghost-button" href="./sample-ddr.html">View sample DDR</a>
           <a class="ghost-button" href="#findings-explorer">Explore findings</a>
         </div>
         <div class="hero-note">
@@ -35,7 +36,91 @@
           <p id="demo-status-copy">Waiting to replay the pipeline stages.</p>
         </div>
         <div class="signal-grid" id="stats-grid"></div>
+        <div class="upload-panel">
+          <div class="upload-head">
+            <div>
+              <div class="eyebrow">Upload simulation</div>
+              <h2>Stage the input reports</h2>
+            </div>
+          </div>
+          <div class="upload-grid">
+            <article class="upload-card" data-upload-card="inspection">
+              <div class="upload-card-top">
+                <span class="upload-badge">PDF</span>
+                <strong>Inspection report</strong>
+              </div>
+              <p>Text observations, sections, and site photographs.</p>
+              <button class="upload-button" data-upload-trigger="inspection" type="button">Simulate inspection upload</button>
+              <div class="upload-status" data-upload-status="inspection">Awaiting file</div>
+            </article>
+            <article class="upload-card" data-upload-card="thermal">
+              <div class="upload-card-top">
+                <span class="upload-badge">PDF</span>
+                <strong>Thermal report</strong>
+              </div>
+              <p>Temperature observations and thermal image evidence.</p>
+              <button class="upload-button" data-upload-trigger="thermal" type="button">Simulate thermal upload</button>
+              <div class="upload-status" data-upload-status="thermal">Awaiting file</div>
+            </article>
+          </div>
+        </div>
       </aside>
+    </section>
+
+    <section class="section-grid transform-grid">
+      <div class="panel">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Before and after</div>
+            <h2>From messy source files to a client-ready DDR</h2>
+          </div>
+        </div>
+        <div class="transform-cards" id="transform-cards">
+          <article class="transform-card before-card">
+            <span class="transform-label">Before</span>
+            <h3>Unstructured source material</h3>
+            <ul class="transform-list">
+              <li>Inspection and thermal findings are spread across separate PDFs.</li>
+              <li>Area names vary between reports and some locations are missing.</li>
+              <li>Conflicts and unclear causes are easy to miss in a manual review.</li>
+            </ul>
+          </article>
+          <article class="transform-card after-card">
+            <span class="transform-label">After</span>
+            <h3>Evidence-grounded diagnostic report</h3>
+            <ul class="transform-list">
+              <li>Findings are merged, normalized, and grouped into one DDR view.</li>
+              <li>Conflicts, confidence, and missing data stay visible to the reviewer.</li>
+              <li>Every highlighted example keeps a source trail back to the original pages.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Output preview</div>
+            <h2>Jump straight into the generated report</h2>
+          </div>
+        </div>
+        <div class="report-preview-card">
+          <div class="report-preview-top">
+            <strong>Sample DDR output</strong>
+            <span class="meta-pill">Static preview</span>
+          </div>
+          <p>
+            Open a client-style DDR page generated from the same demo dataset used in this site.
+            It is designed to feel like the final deliverable a reviewer would inspect after the pipeline run.
+          </p>
+          <div class="report-preview-stats">
+            <div><span>Findings</span><strong id="preview-findings-count"></strong></div>
+            <div><span>Grounded causes</span><strong id="preview-root-cause-count"></strong></div>
+            <div><span>Conflicts</span><strong id="preview-conflict-count"></strong></div>
+          </div>
+          <a class="primary-button report-preview-button" href="./sample-ddr.html">Open sample DDR</a>
+        </div>
+      </div>
     </section>
 
     <section class="section-grid">
